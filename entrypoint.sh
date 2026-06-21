@@ -41,16 +41,5 @@ fi
 sudo -u "$USERNAME" "$DOTFILES_DIR/activate.sh"
 
 
-# ── LazyVim ───────────────────────────────────────────────────────────────────
-NVIM_CONFIG="$USER_HOME/.config/nvim-lazyvim"
-if [ ! -d "$NVIM_CONFIG" ]; then
-    echo "[entrypoint] Cloning LazyVim starter into $NVIM_CONFIG …"
-    if git clone --depth 1 https://github.com/LazyVim/starter "$NVIM_CONFIG"; then
-        chown -R "$USER_UID:$USER_GID" "$NVIM_CONFIG"
-    else
-        echo "[entrypoint] LazyVim clone failed — skipping."
-    fi
-fi
-
 echo "[entrypoint] Starting sshd (user=$USERNAME uid=$USER_UID gid=$USER_GID)"
 exec /usr/sbin/sshd -D -e

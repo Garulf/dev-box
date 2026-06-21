@@ -13,7 +13,6 @@ SSH_PORT=${SSH_PORT}
 HOST_USER=$(id -un)
 HOST_UID=$(id -u)
 HOST_GID=$(id -g)
-HOST_HOME=${HOME}
 EOF
 
 echo "Written to $ENV_FILE"

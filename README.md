@@ -54,6 +54,3 @@ A personal Docker-based development environment with SSH access, pre-loaded with
 
 Edit `custom-packages.txt` (one package per line) and rebuild. Only that layer re-runs — the rest of the image stays cached.
 
-## Home directory
-
-Your host home directory is bind-mounted into the container, so dotfiles, SSH keys, and project directories are all available as-is.

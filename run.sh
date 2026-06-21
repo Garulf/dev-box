@@ -9,13 +9,11 @@ if [ -n "${SUDO_USER:-}" ]; then
     HOST_USER="$SUDO_USER"
     HOST_UID=$(id -u "$SUDO_USER")
     HOST_GID=$(id -g "$SUDO_USER")
-    HOST_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
 else
     HOST_USER=$(id -un)
     HOST_UID=$(id -u)
     HOST_GID=$(id -g)
-    HOST_HOME="$HOME"
 fi
-export HOST_USER HOST_UID HOST_GID HOST_HOME
+export HOST_USER HOST_UID HOST_GID
 
 exec docker compose "$@"

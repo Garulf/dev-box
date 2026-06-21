@@ -10,7 +10,7 @@ cat > "$ENV_FILE" <<EOF
 SSH_PORT=${SSH_PORT}
 
 # Host user mapped into the container
-HOST_USER=$(id -un | tr '[:upper:]' '[:lower:]')
+HOST_USER=$(id -un)
 HOST_UID=$(id -u)
 HOST_GID=$(id -g)
 EOF

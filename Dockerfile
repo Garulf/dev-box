@@ -65,6 +65,9 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf \
   && /opt/fzf/install --bin \
   && ln -sf /opt/fzf/bin/fzf /usr/local/bin/fzf
 
+# ── starship ──────────────────────────────────────────────────────────────────
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
+
 # ── SSH daemon baseline config ────────────────────────────────────────────────
 RUN mkdir -p /var/run/sshd /etc/ssh/authorized_keys \
   && ssh-keygen -A \

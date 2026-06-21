@@ -1,0 +1,20 @@
+services:
+  devbox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devbox:latest
+    container_name: devbox
+    hostname: devbox
+    environment:
+      - HOST_USER=${HOST_USER}
+      - HOST_UID=${HOST_UID}
+      - HOST_GID=${HOST_GID}
+    volumes:
+      - ${HOST_HOME}:/home/${HOST_USER}
+      - ./authorized_keys:/etc/ssh/authorized_keys/${HOST_USER}:ro
+    ports:
+      - "${SSH_PORT:-2222}:22"
+    restart: unless-stopped
+    stdin_open: true
+    tty: true

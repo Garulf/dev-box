@@ -6,7 +6,7 @@
 set -euo pipefail
 
 if [ -n "${SUDO_USER:-}" ]; then
-    HOST_USER="$SUDO_USER"
+    HOST_USER=$(echo "$SUDO_USER" | tr '[:upper:]' '[:lower:]')
     HOST_UID=$(id -u "$SUDO_USER")
     HOST_GID=$(id -g "$SUDO_USER")
 else

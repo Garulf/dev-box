@@ -38,10 +38,7 @@ DOTFILES_DIR="$USER_HOME/.dotfiles"
 if [ ! -d "$DOTFILES_DIR" ]; then
     sudo -u "$USERNAME" git clone --depth 1 https://github.com/garulf/dotfiles "$DOTFILES_DIR"
 fi
-sudo -u "$USERNAME" stow --restow --target="$USER_HOME" --dir="$DOTFILES_DIR" home
-if [ ! -d "$USER_HOME/.tmux/plugins/tpm" ]; then
-    sudo -u "$USERNAME" git clone https://github.com/tmux-plugins/tpm "$USER_HOME/.tmux/plugins/tpm"
-fi
+sudo -u "$USERNAME" "$DOTFILES_DIR/activate.sh"
 
 
 # ── LazyVim ───────────────────────────────────────────────────────────────────

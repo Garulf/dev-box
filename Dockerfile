@@ -33,8 +33,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
   && apt-get install -y --no-install-recommends nodejs \
   && rm -rf /var/lib/apt/lists/*
 
-# ── Claude Code ───────────────────────────────────────────────────────────────
-RUN npm install -g @anthropic-ai/claude-code
+# ── Claude Code + Bitwarden CLI ───────────────────────────────────────────────
+RUN npm install -g @anthropic-ai/claude-code @bitwarden/cli
 
 # ── Neovim (latest stable) ────────────────────────────────────────────────────
 RUN ARCH=$(dpkg --print-architecture) \
@@ -64,6 +64,9 @@ RUN ARCH=$(dpkg --print-architecture) \
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf \
   && /opt/fzf/install --bin \
   && ln -sf /opt/fzf/bin/fzf /usr/local/bin/fzf
+
+# ── zoxide ────────────────────────────────────────────────────────────────────
+RUN curl -fsSL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 
 # ── starship ──────────────────────────────────────────────────────────────────
 RUN curl -fsSL https://starship.rs/install.sh | sh -s -- --yes

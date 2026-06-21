@@ -37,9 +37,6 @@ if [ ! -d "$NVIM_CONFIG" ]; then
     echo "[entrypoint] Cloning LazyVim starter into $NVIM_CONFIG …"
     if git clone --depth 1 https://github.com/LazyVim/starter "$NVIM_CONFIG"; then
         chown -R "$USER_UID:$USER_GID" "$NVIM_CONFIG"
-        echo "[entrypoint] Pre-installing LazyVim plugins …"
-        sudo -u "$USERNAME" NVIM_APPNAME=nvim-lazyvim \
-            nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
     else
         echo "[entrypoint] LazyVim clone failed — skipping."
     fi

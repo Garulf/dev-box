@@ -20,7 +20,7 @@ A personal Docker-based development environment with SSH access, pre-loaded with
    ```sh
    cp .env.example .env
    # or let the script detect your current user automatically:
-   ./setup-env.sh
+   ./setup.sh
    ```
 
 2. **Add your SSH public key**

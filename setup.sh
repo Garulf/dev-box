@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENV_FILE="$(dirname "$0")/.env"
+DIR="$(dirname "$0")"
+ENV_FILE="$DIR/.env"
 
 SSH_PORT="${SSH_PORT:-2222}"
 
@@ -20,7 +21,6 @@ cat "$ENV_FILE"
 
 chmod 600 "$DIR/authorized_keys" 2>/dev/null && echo "Set authorized_keys permissions to 600" || true
 
-DIR="$(dirname "$0")"
 if [ ! -f "$DIR/authorized_keys" ]; then
     PUB_KEY=$(ls ~/.ssh/id_*.pub 2>/dev/null | head -1)
     if [ -n "$PUB_KEY" ]; then

@@ -33,6 +33,16 @@ usermod -p '*' "$USERNAME"
 # ── Fix home directory ownership (bind mount starts as root:root) ─────────────
 chown "$USER_UID:$USER_GID" "$USER_HOME"
 
+# ── Dotfiles ──────────────────────────────────────────────────────────────────
+DOTFILES_DIR="$USER_HOME/.dotfiles"
+if [ ! -d "$DOTFILES_DIR" ]; then
+    sudo -u "$USERNAME" git clone --depth 1 https://github.com/garulf/dotfiles "$DOTFILES_DIR"
+fi
+sudo -u "$USERNAME" stow --restow --target="$USER_HOME" --dir="$DOTFILES_DIR" home
+if [ ! -d "$USER_HOME/.tmux/plugins/tpm" ]; then
+    sudo -u "$USERNAME" git clone https://github.com/tmux-plugins/tpm "$USER_HOME/.tmux/plugins/tpm"
+fi
+
 
 # ── LazyVim ───────────────────────────────────────────────────────────────────
 NVIM_CONFIG="$USER_HOME/.config/nvim-lazyvim"

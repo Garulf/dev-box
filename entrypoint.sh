@@ -30,6 +30,9 @@ fi
 # which sshd rejects even for pubkey auth. '*' disables password login without locking.
 usermod -p '*' "$USERNAME"
 
+# ── Fix home directory ownership (bind mount starts as root:root) ─────────────
+chown "$USER_UID:$USER_GID" "$USER_HOME"
+
 
 # ── LazyVim ───────────────────────────────────────────────────────────────────
 NVIM_CONFIG="$USER_HOME/.config/nvim-lazyvim"

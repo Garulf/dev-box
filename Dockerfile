@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     zsh tmux screen stow git curl wget unzip zip xz-utils \
     build-essential ca-certificates gnupg lsb-release \
-    openssh-server sudo locales tzdata procps \
+    openssh-server mosh sudo locales tzdata procps \
     python3 python3-pip python3-venv \
     ripgrep fd-find \
   && locale-gen en_US.UTF-8 \
@@ -93,5 +93,6 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 22
+EXPOSE 60000-61000/udp
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

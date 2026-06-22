@@ -15,6 +15,7 @@ services:
       - ./authorized_keys:/etc/ssh/authorized_keys/${HOST_USER}:ro
     ports:
       - "${SSH_PORT:-2222}:22"
+      - "60000-61000:60000-61000/udp"
     restart: unless-stopped
     stdin_open: true
     tty: true

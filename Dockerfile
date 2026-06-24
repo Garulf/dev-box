@@ -112,6 +112,6 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 22
-EXPOSE 60000-61000/udp
+EXPOSE 60000-60010/udp
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

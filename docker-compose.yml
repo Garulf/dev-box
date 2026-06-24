@@ -17,7 +17,7 @@ services:
       - /volume3/docker:/volume3/docker
     ports:
       - "${SSH_PORT:-2222}:22"
-      - "60000-61000:60000-61000/udp"
+      - "60000-60010:60000-60010/udp"
     restart: unless-stopped
     stdin_open: true
     tty: true

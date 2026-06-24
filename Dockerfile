@@ -33,8 +33,18 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
   && apt-get install -y --no-install-recommends nodejs \
   && rm -rf /var/lib/apt/lists/*
 
+# ── Playwright + headless Chromium ───────────────────────────────────────────
+RUN npm install --prefix /usr/local -g playwright \
+  && playwright install --with-deps chromium \
+  && rm -rf /root/.cache/ms-playwright/chromium-*/chrome-linux/PepperFlash
+
 # ── Claude Code + Bitwarden CLI ───────────────────────────────────────────────
-RUN npm install -g @anthropic-ai/claude-code @bitwarden/cli
+RUN npm install --prefix /usr/local -g @anthropic-ai/claude-code @bitwarden/cli
+
+# ── Per-user npm global prefix ────────────────────────────────────────────────
+# ~/.npm-global/bin before system paths so `claude install` / user npm globals shadow system install
+RUN printf 'export NPM_CONFIG_PREFIX="$HOME/.npm-global"\nexport PATH="$HOME/.npm-global/bin:$HOME/.local/bin:$PATH"\n' \
+    > /etc/profile.d/npm-user-prefix.sh
 
 # ── Neovim (latest stable) ────────────────────────────────────────────────────
 RUN ARCH=$(dpkg --print-architecture) \

@@ -41,5 +41,16 @@ fi
 sudo -u "$USERNAME" "$DOTFILES_DIR/activate.sh"
 
 
+# ── Docker socket access ──────────────────────────────────────────────────────
+if [ -S /var/run/docker.sock ]; then
+    DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)
+    DOCKER_GROUP=$(getent group "$DOCKER_GID" | cut -d: -f1 || true)
+    if [ -z "$DOCKER_GROUP" ]; then
+        groupadd -g "$DOCKER_GID" docker 2>/dev/null || true
+        DOCKER_GROUP=docker
+    fi
+    usermod -aG "$DOCKER_GROUP" "$USERNAME"
+fi
+
 echo "[entrypoint] Starting sshd (user=$USERNAME uid=$USER_UID gid=$USER_GID)"
 exec /usr/sbin/sshd -D -e

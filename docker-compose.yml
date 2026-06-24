@@ -14,6 +14,7 @@ services:
       - ./home:/home/${HOST_USER}
       - ./authorized_keys:/etc/ssh/authorized_keys/${HOST_USER}:ro
       - /var/run/docker.sock:/var/run/docker.sock
+      - /volume3/docker:/volume3/docker
     ports:
       - "${SSH_PORT:-2222}:22"
       - "60000-61000:60000-61000/udp"

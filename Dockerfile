@@ -76,7 +76,7 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf \
   && ln -sf /opt/fzf/bin/fzf /usr/local/bin/fzf
 
 # ── zoxide ────────────────────────────────────────────────────────────────────
-RUN curl -fsSL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | ZOXIDE_INSTALL_DIR=/usr/local/bin sh
+RUN curl -fsSL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh -s -- --bin-dir /usr/local/bin
 
 # ── Docker CLI ────────────────────────────────────────────────────────────────
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg \

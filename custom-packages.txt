@@ -11,3 +11,7 @@
 
 
 jq
+htop
+btop
+ncdu
+tree

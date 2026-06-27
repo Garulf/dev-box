@@ -108,7 +108,7 @@ RUN ARCH=$(dpkg --print-architecture) \
              | grep '"tag_name"' | head -1 | cut -d'"' -f4) \
   && curl -Lo /tmp/eza.tar.gz \
        "https://github.com/eza-community/eza/releases/download/${TAG}/eza_${EZA_ARCH}-unknown-linux-musl.tar.gz" \
-  && tar -xzf /tmp/eza.tar.gz -C /usr/local/bin eza \
+  && tar -xzf /tmp/eza.tar.gz -C /usr/local/bin \
   && rm /tmp/eza.tar.gz
 
 # ── lsd ───────────────────────────────────────────────────────────────────────
@@ -148,8 +148,10 @@ RUN ARCH=$(dpkg --print-architecture) \
   && VER="${TAG#v}" \
   && curl -Lo /tmp/duf.tar.gz \
        "https://github.com/muesli/duf/releases/download/${TAG}/duf_${VER}_linux_${DUF_ARCH}.tar.gz" \
-  && tar -xzf /tmp/duf.tar.gz -C /usr/local/bin duf \
-  && rm /tmp/duf.tar.gz
+  && mkdir /tmp/duf-dir \
+  && tar -xzf /tmp/duf.tar.gz -C /tmp/duf-dir \
+  && install -m755 /tmp/duf-dir/duf /usr/local/bin/duf \
+  && rm -rf /tmp/duf.tar.gz /tmp/duf-dir
 
 # ── gron ──────────────────────────────────────────────────────────────────────
 RUN ARCH=$(dpkg --print-architecture) \
@@ -159,7 +161,7 @@ RUN ARCH=$(dpkg --print-architecture) \
   && VER="${TAG#v}" \
   && curl -Lo /tmp/gron.tgz \
        "https://github.com/tomnomnom/gron/releases/download/${TAG}/gron-linux-${GRON_ARCH}-${VER}.tgz" \
-  && tar -xzf /tmp/gron.tgz -C /usr/local/bin gron \
+  && tar -xzf /tmp/gron.tgz -C /usr/local/bin \
   && rm /tmp/gron.tgz
 
 # ── jless ─────────────────────────────────────────────────────────────────────
@@ -190,7 +192,7 @@ RUN ARCH=$(dpkg --print-architecture) \
              | grep '"tag_name"' | head -1 | cut -d'"' -f4) \
   && curl -Lo /tmp/navi.tar.gz \
        "https://github.com/denisidoro/navi/releases/download/${TAG}/navi-${TAG}-${NAVI_ARCH}-unknown-linux-musl.tar.gz" \
-  && tar -xzf /tmp/navi.tar.gz -C /usr/local/bin navi \
+  && tar -xzf /tmp/navi.tar.gz -C /usr/local/bin \
   && rm /tmp/navi.tar.gz
 
 # ── rbw ───────────────────────────────────────────────────────────────────────
@@ -201,8 +203,10 @@ RUN ARCH=$(dpkg --print-architecture) \
   && VER="${TAG#v}" \
   && curl -Lo /tmp/rbw.tar.gz \
        "https://github.com/doy/rbw/releases/download/${TAG}/rbw-${VER}-${RBW_ARCH}-unknown-linux-musl.tar.gz" \
-  && tar -xzf /tmp/rbw.tar.gz -C /usr/local/bin rbw rbw-agent \
-  && rm /tmp/rbw.tar.gz
+  && mkdir /tmp/rbw-dir \
+  && tar -xzf /tmp/rbw.tar.gz -C /tmp/rbw-dir \
+  && install -m755 /tmp/rbw-dir/rbw /tmp/rbw-dir/rbw-agent /usr/local/bin/ \
+  && rm -rf /tmp/rbw.tar.gz /tmp/rbw-dir
 
 # ── SSH daemon baseline config ────────────────────────────────────────────────
 RUN mkdir -p /var/run/sshd /etc/ssh/authorized_keys \

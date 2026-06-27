@@ -41,6 +41,28 @@ fi
 sudo -u "$USERNAME" "$DOTFILES_DIR/activate.sh"
 
 
+# ── Generate user SSH keypair on first run ────────────────────────────────────
+SSH_DIR="$USER_HOME/.ssh"
+if [ ! -f "$SSH_DIR/id_ed25519" ]; then
+    sudo -u "$USERNAME" mkdir -p "$SSH_DIR"
+    chmod 700 "$SSH_DIR"
+    sudo -u "$USERNAME" ssh-keygen -t ed25519 -f "$SSH_DIR/id_ed25519" -N "" -C "${USERNAME}@devbox"
+fi
+
+# ── Install Claude Code to user npm prefix (enables auto-updates without sudo) ─
+if [ ! -f "$USER_HOME/.npm-global/bin/claude" ]; then
+    sudo -u "$USERNAME" env HOME="$USER_HOME" NPM_CONFIG_PREFIX="$USER_HOME/.npm-global" \
+        npm install -g @anthropic-ai/claude-code
+fi
+
+# ── Generate user SSH keypair on first run ────────────────────────────────────
+SSH_DIR="$USER_HOME/.ssh"
+if [ ! -f "$SSH_DIR/id_ed25519" ]; then
+    sudo -u "$USERNAME" mkdir -p "$SSH_DIR"
+    chmod 700 "$SSH_DIR"
+    sudo -u "$USERNAME" ssh-keygen -t ed25519 -f "$SSH_DIR/id_ed25519" -N "" -C "${USERNAME}@devbox"
+fi
+
 # ── Docker socket access ──────────────────────────────────────────────────────
 if [ -S /var/run/docker.sock ]; then
     DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)

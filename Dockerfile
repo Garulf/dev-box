@@ -195,18 +195,19 @@ RUN ARCH=$(dpkg --print-architecture) \
   && tar -xzf /tmp/navi.tar.gz -C /usr/local/bin \
   && rm /tmp/navi.tar.gz
 
-# ── rbw ───────────────────────────────────────────────────────────────────────
+# ── rbw (amd64 deb from git.tozt.net; no arm64 build available) ──────────────
 RUN ARCH=$(dpkg --print-architecture) \
-  && case "$ARCH" in amd64) RBW_ARCH=x86_64 ;; arm64) RBW_ARCH=aarch64 ;; *) echo "Unsupported arch: $ARCH" && exit 1 ;; esac \
-  && TAG=$(curl -fsSL https://api.github.com/repos/doy/rbw/releases/latest \
-             | grep '"tag_name"' | head -1 | cut -d'"' -f4) \
-  && VER="${TAG#v}" \
-  && curl -Lo /tmp/rbw.tar.gz \
-       "https://github.com/doy/rbw/releases/download/${TAG}/rbw-${VER}-${RBW_ARCH}-unknown-linux-musl.tar.gz" \
-  && mkdir /tmp/rbw-dir \
-  && tar -xzf /tmp/rbw.tar.gz -C /tmp/rbw-dir \
-  && install -m755 /tmp/rbw-dir/rbw /tmp/rbw-dir/rbw-agent /usr/local/bin/ \
-  && rm -rf /tmp/rbw.tar.gz /tmp/rbw-dir
+  && if [ "$ARCH" = "amd64" ]; then \
+       VER=$(curl -fsSL https://git.tozt.net/rbw/releases/deb/ \
+               | grep -oE 'rbw_[0-9]+\.[0-9]+\.[0-9]+_amd64\.deb' \
+               | sort -V | tail -1 | sed 's/rbw_//;s/_amd64\.deb//') \
+       && curl -fsSLo /tmp/rbw.deb \
+            "https://git.tozt.net/rbw/releases/deb/rbw_${VER}_amd64.deb" \
+       && dpkg -i /tmp/rbw.deb \
+       && rm /tmp/rbw.deb; \
+     else \
+       echo "rbw: no pre-built deb for $ARCH, skipping"; \
+     fi
 
 # ── SSH daemon baseline config ────────────────────────────────────────────────
 RUN mkdir -p /var/run/sshd /etc/ssh/authorized_keys \

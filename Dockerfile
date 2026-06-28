@@ -195,6 +195,16 @@ RUN ARCH=$(dpkg --print-architecture) \
   && tar -xzf /tmp/navi.tar.gz -C /usr/local/bin \
   && rm /tmp/navi.tar.gz
 
+# ── yazi ──────────────────────────────────────────────────────────────────────
+RUN ARCH=$(dpkg --print-architecture) \
+  && case "$ARCH" in amd64) YAZI_ARCH=x86_64 ;; arm64) YAZI_ARCH=aarch64 ;; *) echo "Unsupported arch: $ARCH" && exit 1 ;; esac \
+  && TAG=$(curl -fsSL https://api.github.com/repos/sxyazi/yazi/releases/latest \
+             | grep '"tag_name"' | head -1 | cut -d'"' -f4) \
+  && curl -Lo /tmp/yazi.tar.gz \
+       "https://github.com/sxyazi/yazi/releases/download/${TAG}/yazi-${YAZI_ARCH}-unknown-linux-musl.tar.gz" \
+  && tar -xzf /tmp/yazi.tar.gz --wildcards --strip-components=1 -C /usr/local/bin "*/yazi" "*/ya" \
+  && rm /tmp/yazi.tar.gz
+
 # ── rbw (amd64 deb from git.tozt.net; no arm64 build available) ──────────────
 RUN ARCH=$(dpkg --print-architecture) \
   && if [ "$ARCH" = "amd64" ]; then \

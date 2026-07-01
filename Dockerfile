@@ -205,6 +205,14 @@ RUN ARCH=$(dpkg --print-architecture) \
   && tar -xzf /tmp/yazi.tar.gz --wildcards --strip-components=1 -C /usr/local/bin "*/yazi" "*/ya" \
   && rm /tmp/yazi.tar.gz
 
+# ── claude-tmux ───────────────────────────────────────────────────────────────
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+       | sh -s -- -y --default-toolchain stable --profile minimal \
+  && . /root/.cargo/env \
+  && cargo install claude-tmux \
+  && install -m755 /root/.cargo/bin/claude-tmux /usr/local/bin/ \
+  && rm -rf /root/.rustup /root/.cargo
+
 # ── rbw (amd64 deb from git.tozt.net; no arm64 build available) ──────────────
 RUN ARCH=$(dpkg --print-architecture) \
   && if [ "$ARCH" = "amd64" ]; then \

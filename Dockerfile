@@ -16,6 +16,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && ln -sf "$(which fdfind)" /usr/local/bin/fd \
   && rm -rf /var/lib/apt/lists/*
 
+# ── claude-tmux (Rust compile — keep early for cache) ────────────────────────
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+       | sh -s -- -y --default-toolchain stable --profile minimal \
+  && . /root/.cargo/env \
+  && cargo install claude-tmux \
+  && install -m755 /root/.cargo/bin/claude-tmux /usr/local/bin/ \
+  && rm -rf /root/.rustup /root/.cargo
+
 # ── GitHub CLI ────────────────────────────────────────────────────────────────
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
       | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -204,14 +212,6 @@ RUN ARCH=$(dpkg --print-architecture) \
        "https://github.com/sxyazi/yazi/releases/download/${TAG}/yazi-${YAZI_ARCH}-unknown-linux-musl.tar.gz" \
   && tar -xzf /tmp/yazi.tar.gz --wildcards --strip-components=1 -C /usr/local/bin "*/yazi" "*/ya" \
   && rm /tmp/yazi.tar.gz
-
-# ── claude-tmux ───────────────────────────────────────────────────────────────
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
-       | sh -s -- -y --default-toolchain stable --profile minimal \
-  && . /root/.cargo/env \
-  && cargo install claude-tmux \
-  && install -m755 /root/.cargo/bin/claude-tmux /usr/local/bin/ \
-  && rm -rf /root/.rustup /root/.cargo
 
 # ── rbw (amd64 deb from git.tozt.net; no arm64 build available) ──────────────
 RUN ARCH=$(dpkg --print-architecture) \
